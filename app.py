@@ -17,7 +17,7 @@ def load_data():
 df = load_data()
 
 # ----------------- SIDEBAR FILTERS -----------------
-st.sidebar.header("🔍 Dashboard Filters")
+st.sidebar.header("Dashboard Filters")
 
 country_filter = st.sidebar.multiselect(
     "Select Country:",
@@ -38,7 +38,7 @@ filtered_df = df[
 ]
 
 # ----------------- MAIN DASHBOARD -----------------
-st.title("🏦 Banking Customer Churn & Retention Analytics")
+st.title("Banking Customer Churn & Retention Analytics")
 st.markdown("Interactive executive dashboard monitoring customer attrition, revenue risk, and risk segmentation.")
 
 # KPI Cards
@@ -71,34 +71,48 @@ with row1_col1:
         labels={'churn_rate_pct': 'Churn Rate (%)', 'country': 'Country'},
         color_discrete_sequence=px.colors.qualitative.Safe
     )
+    fig_geo.update_layout(showlegend=False)
     st.plotly_chart(fig_geo, use_container_width=True)
 
 with row1_col2:
     st.subheader("Product Holdings vs. Attrition")
     prod_df = filtered_df.groupby('products_number')['churn'].agg(['count', 'mean']).reset_index()
     prod_df['churn_rate_pct'] = prod_df['mean'] * 100
+    prod_df['products_label'] = prod_df['products_number'].astype(str)
     fig_prod = px.bar(
-        prod_df, 
-        x='products_number', 
-        y='churn_rate_pct', 
+        prod_df,
+        x='products_label',
+        y='churn_rate_pct',
         text_auto='.2f',
-        labels={'products_number': 'Number of Products', 'churn_rate_pct': 'Churn Rate (%)'},
+        custom_data=['count'],
+        labels={'products_label': 'Number of Products', 'churn_rate_pct': 'Churn Rate (%)'},
         color='churn_rate_pct',
         color_continuous_scale='Reds'
     )
+    fig_prod.update_traces(
+        hovertemplate='%{x} product(s)<br>Churn Rate: %{y:.2f}%'
+                      '<br>Customers: %{customdata[0]:,}<extra></extra>'
+    )
+    fig_prod.update_layout(coloraxis_showscale=False)
     st.plotly_chart(fig_prod, use_container_width=True)
+    st.caption("Hover for segment size — the 3- and 4-product segments are small (n=266 and n=60).")
 
 row2_col1, row2_col2 = st.columns(2)
 
 with row2_col1:
     st.subheader("Age Distribution by Churn Status")
+    age_df = filtered_df.assign(
+        Status=filtered_df['churn'].map({0: 'Retained', 1: 'Churned'})
+    )
     fig_age = px.histogram(
-        filtered_df, 
-        x='age', 
-        color=filtered_df['churn'].map({0: 'Retained', 1: 'Churned'}).rename('Status'),
+        age_df,
+        x='age',
+        color='Status',
         barmode='overlay',
         nbins=30,
-        labels={'age': 'Customer Age'}
+        category_orders={'Status': ['Retained', 'Churned']},
+        labels={'age': 'Customer Age', 'count': 'Customers'},
+        color_discrete_map={'Retained': '#2c7fb8', 'Churned': '#e74c3c'}
     )
     st.plotly_chart(fig_age, use_container_width=True)
 

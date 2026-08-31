@@ -1,6 +1,14 @@
 # Bank Customer Churn & Retention Analytics
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://banking-churn-analytics.streamlit.app)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 An end-to-end data analytics project investigating customer attrition across 10,000 retail banking accounts. This project identifies core churn drivers, quantifies at-risk deposit revenue, and delivers actionable retention strategies through SQL data pipelines, Python EDA, and an interactive Streamlit dashboard.
+
+### 🔗 [**Launch the live dashboard →**](https://banking-churn-analytics.streamlit.app)
+
+![Banking Churn Dashboard](docs/dashboard.png)
 
 ---
 
@@ -53,6 +61,8 @@ The raw CSV is included at `data/raw/Bank Customer Churn Prediction.csv` for rep
 ## Project Structure
 ```text
 banking-churn-analytics/
+├── docs/
+│   └── dashboard.png                 # Dashboard screenshot for this README
 ├── data/
 │   └── raw/
 │       └── Bank Customer Churn Prediction.csv
@@ -73,7 +83,7 @@ banking-churn-analytics/
 Requires Python 3.10 or newer.
 
 ```bash
-git clone https://github.com/<your-username>/banking-churn-analytics.git
+git clone https://github.com/jithmak/banking-churn-analytics.git
 cd banking-churn-analytics
 
 python3 -m venv data_env
@@ -105,6 +115,27 @@ The notebook is committed with its outputs intact, so all charts and tables rend
 from the CSV in `data/raw/`. To run the queries yourself, upload that CSV to your
 own BigQuery dataset and replace the table reference. The queries are included as
 artifacts of the warehouse layer of this project.
+
+---
+
+## Deployment
+
+The dashboard is deployed on **Streamlit Community Cloud**, which builds directly
+from this repository. The dataset is committed under `data/raw/`, so the app is
+fully self-contained — no external database or credentials are required at runtime.
+
+To deploy your own copy:
+
+1. Push this repository to GitHub (it must be **public**, or you must grant
+   Streamlit access to private repos).
+2. Sign in at [share.streamlit.io](https://share.streamlit.io) with your GitHub account.
+3. Click **New app** and select:
+   - **Repository:** `jithmak/banking-churn-analytics`
+   - **Branch:** `main`
+   - **Main file path:** `app.py`
+4. Deploy. Streamlit installs from `requirements.txt` automatically.
+
+Every push to `main` redeploys the app.
 
 ---
 
