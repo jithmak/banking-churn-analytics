@@ -61,19 +61,20 @@ The raw CSV is included at `data/raw/Bank Customer Churn Prediction.csv` for rep
 ## Project Structure
 ```text
 banking-churn-analytics/
-├── docs/
-│   └── dashboard.png                 # Dashboard screenshot for this README
 ├── data/
 │   └── raw/
-│       └── Bank Customer Churn Prediction.csv
+│       └── Bank Customer Churn Prediction.csv  # Kaggle source data (10,000 rows)
 ├── sql/
-│   └── banking_churn_analysis.sql   # BigQuery segmentation queries
+│   └── banking_churn_analysis.sql              # BigQuery segmentation queries
 ├── notebooks/
-│   └── 01_banking_churn_eda.ipynb   # Exploratory Data Analysis & visual stats
-├── app.py                           # Interactive Streamlit web dashboard
-├── requirements.txt                 # Project library dependencies
-├── LICENSE                          # MIT (code only; dataset per Kaggle)
-└── README.md                        # Portfolio case study documentation
+│   └── 01_banking_churn_eda.ipynb              # Exploratory analysis (outputs committed)
+├── docs/
+│   └── dashboard.png                           # Dashboard screenshot used in this README
+├── app.py                                      # Interactive Streamlit dashboard
+├── requirements.txt                            # Python dependencies
+├── .gitignore                                  # Excludes venvs, checkpoints, .DS_Store
+├── LICENSE                                     # MIT (code only; dataset per Kaggle)
+└── README.md                                   # Portfolio case study documentation
 ```
 
 ---
