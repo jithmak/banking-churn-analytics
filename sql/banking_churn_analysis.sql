@@ -23,7 +23,7 @@ SELECT
         WHEN age BETWEEN 18 AND 30 THEN '18-30 (Young Adult)'
         WHEN age BETWEEN 31 AND 45 THEN '31-45 (Mid Career)'
         WHEN age BETWEEN 46 AND 60 THEN '46-60 (Pre-Retirement)'
-        ELSE '60+ (Retiree)'
+        ELSE '61+ (Retiree)'
     END AS age_bracket,
     COUNT(customer_id) AS total_customers,
     SUM(churn) AS churned_customers,

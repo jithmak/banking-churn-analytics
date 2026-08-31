@@ -95,24 +95,32 @@ with row2_col1:
     fig_age = px.histogram(
         filtered_df, 
         x='age', 
-        color=filtered_df['churn'].map({0: 'Retained', 1: 'Churned'}),
+        color=filtered_df['churn'].map({0: 'Retained', 1: 'Churned'}).rename('Status'),
         barmode='overlay',
         nbins=30,
-        labels={'color': 'Status', 'age': 'Customer Age'}
+        labels={'age': 'Customer Age'}
     )
     st.plotly_chart(fig_age, use_container_width=True)
 
 with row2_col2:
     st.subheader("Active Membership Impact")
-    active_df = filtered_df.groupby('active_member')['churn'].mean().reset_index()
-    active_df['active_member'] = active_df['active_member'].map({1: 'Active Member', 0: 'Inactive Member'})
-    active_df['churn_rate_pct'] = active_df['churn'] * 100
-    fig_active = px.pie(
-        active_df, 
-        names='active_member', 
-        values='churn_rate_pct', 
-        color='active_member',
-        hole=0.4,
+    # Churn rates for active vs. inactive members are independent rates, not shares
+    # of a whole, so they are compared side by side rather than as pie slices.
+    active_df = filtered_df.groupby('active_member')['churn'].agg(['size', 'mean']).reset_index()
+    active_df['segment'] = active_df['active_member'].map({1: 'Active Member', 0: 'Inactive Member'})
+    active_df['churn_rate_pct'] = active_df['mean'] * 100
+    fig_active = px.bar(
+        active_df,
+        x='segment',
+        y='churn_rate_pct',
+        color='segment',
+        text_auto='.2f',
+        custom_data=['size'],
+        labels={'segment': 'Membership Status', 'churn_rate_pct': 'Churn Rate (%)'},
         color_discrete_map={'Active Member': '#2ecc71', 'Inactive Member': '#e74c3c'}
     )
+    fig_active.update_traces(
+        hovertemplate='%{x}<br>Churn Rate: %{y:.2f}%<br>Customers: %{customdata[0]:,}<extra></extra>'
+    )
+    fig_active.update_layout(showlegend=False)
     st.plotly_chart(fig_active, use_container_width=True)
