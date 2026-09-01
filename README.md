@@ -67,7 +67,8 @@ banking-churn-analytics/
 ├── sql/
 │   └── banking_churn_analysis.sql              # BigQuery segmentation queries
 ├── notebooks/
-│   └── 01_banking_churn_eda.ipynb              # Exploratory analysis (outputs committed)
+│   ├── 01_banking_churn_eda.ipynb              # Exploratory analysis (outputs committed)
+│   └── 02_kaggle_churn_analysis.ipynb          # Kaggle-published version (Plotly, self-contained)
 ├── docs/
 │   └── dashboard.png                           # Dashboard screenshot used in this README
 ├── app.py                                      # Interactive Streamlit dashboard
@@ -108,6 +109,11 @@ streamlit run app.py
 ```bash
 jupyter lab notebooks/01_banking_churn_eda.ipynb
 ```
+
+A second notebook, `notebooks/02_kaggle_churn_analysis.ipynb`, is the version
+published on Kaggle. It is self-contained and interactive (Plotly), and resolves
+the dataset from either the Kaggle input mount or this repository, so it runs in
+both places unchanged.
 
 The notebook is committed with its outputs intact, so all charts and tables render directly on GitHub without needing to execute it.
 
